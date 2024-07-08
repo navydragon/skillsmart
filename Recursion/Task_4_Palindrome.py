@@ -1,20 +1,22 @@
 import unittest
 
 
-def is_palindrome(s):
-    # Удаляем все пробелы и приводим строку к нижнему регистру для корректного сравнения
-    s = s.replace(" ", "").lower()
+def is_palindrome(s, left=None, right=None):
+    # очищаем строку при первом вызове
+    if left is None and right is None:
+        s = s.replace(" ", "").lower()
+        left = 0
+        right = len(s) - 1
 
-    # Базовый случай: строка с длиной 0 или 1 является палиндромом
-    if len(s) <= 1:
+    # Базовый случай
+    if left >= right:
         return True
 
-    # Сравниваем первый и последний символы
-    if s[0] != s[-1]:
+    if s[left] != s[right]:
         return False
 
-    # Рекурсивно проверяем оставшуюся часть строки
-    return is_palindrome(s[1:-1])
+    # рекурсия
+    return is_palindrome(s, left + 1, right - 1)
 
 
 class TestIsPalindromeFunction(unittest.TestCase):
@@ -26,20 +28,20 @@ class TestIsPalindromeFunction(unittest.TestCase):
 
     def test_simple_palindromes(self):
         self.assertTrue(is_palindrome("aba"))
-        self.assertTrue(is_palindrome("race car"))
-        self.assertTrue(is_palindrome("казак"))
+        self.assertTrue(is_palindrome("racecar"))
+        self.assertTrue(is_palindrome("madam"))
 
     def test_non_palindromes(self):
-        self.assertFalse(is_palindrome("рекурсия"))
+        self.assertFalse(is_palindrome("abc"))
         self.assertFalse(is_palindrome("hello"))
 
     def test_palindromes_with_spaces_and_capitals(self):
-        self.assertTrue(is_palindrome("А роза упала на лапу Азора  "))
-        self.assertTrue(is_palindrome("Аргентина манит негра"))
-        self.assertTrue(is_palindrome("Во гробик довод киборгоВ"))
+        self.assertTrue(is_palindrome("A man a plan a canal Panama"))
+        self.assertTrue(is_palindrome("Was it a car or a cat I saw"))
+        self.assertTrue(is_palindrome("No lemon no melon"))
 
     def test_non_palindromes_with_spaces_and_capitals(self):
-        self.assertFalse(is_palindrome("Какие числа считаются палиндромами?"))
+        self.assertFalse(is_palindrome("This is not a palindrome"))
 
 
 if __name__ == '__main__':
