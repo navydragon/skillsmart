@@ -1,13 +1,12 @@
 import unittest
 
 
-def is_palindrome(s, left=None, right=None):
-    # очищаем строку при первом вызове
-    if left is None and right is None:
-        s = s.replace(" ", "").lower()
-        left = 0
-        right = len(s) - 1
+def is_palindrome(s):
+    # Очищаем строку и приводим к нижнему регистру
+    cleaned_s = s.replace(" ", "").lower()
+    return _is_palindrome_recursive(cleaned_s, 0, len(cleaned_s) - 1)
 
+def _is_palindrome_recursive(s, left, right):
     # Базовый случай
     if left >= right:
         return True
@@ -15,8 +14,7 @@ def is_palindrome(s, left=None, right=None):
     if s[left] != s[right]:
         return False
 
-    # рекурсия
-    return is_palindrome(s, left + 1, right - 1)
+    return _is_palindrome_recursive(s, left + 1, right - 1)
 
 
 class TestIsPalindromeFunction(unittest.TestCase):
