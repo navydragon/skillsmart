@@ -1,7 +1,7 @@
 import unittest
 
 
-def print_even_index_elements(lst, index=0):
+def print_even_index_elements(lst, index):
     # Базовый случай
     if index >= len(lst):
         return

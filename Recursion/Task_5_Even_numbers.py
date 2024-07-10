@@ -1,29 +1,26 @@
 import unittest
 
 
-def print_even_numbers(lst):
-    if not lst:
+def print_even_numbers(lst, index):
+    if index >= len(lst):
         return
-    if lst[0] % 2 == 0:
-        print(lst[0])
-    lst.pop(0)
-    print_even_numbers(lst)
-
+    if lst[index] % 2 == 0:
+        print(lst[index])
+    print_even_numbers(lst, index + 1)
 
 # Вспомогательная функция для тестирования, чтобы собирать результаты в список
 def get_even_numbers(lst):
     result = []
-    _collect_even_numbers(lst, result)
+    _collect_even_numbers(lst, 0, result)
     return result
 
-
-def _collect_even_numbers(lst, result):
-    if not lst:
+def _collect_even_numbers(lst, index, result):
+    if index >= len(lst):
         return
-    if lst[0] % 2 == 0:
-        result.append(lst[0])
-    lst.pop(0)
-    _collect_even_numbers(lst, result)
+    if lst[index] % 2 == 0:
+        result.append(lst[index])
+    _collect_even_numbers(lst, index + 1, result)
+
 
 
 class TestPrintEvenNumbersFunction(unittest.TestCase):
