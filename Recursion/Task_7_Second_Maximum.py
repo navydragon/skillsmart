@@ -8,15 +8,17 @@ def find_second_maximum(lst):
 
 def find_second_maximum_recursive(lst, index, first_max, second_max):
     if index == len(lst):
+        if second_max == float('-inf'):
+            raise ValueError("Список должен содержать хотя бы два различных элемента")
         return second_max
 
     current = lst[index]
     if current >= first_max:
-        return find_second_maximum_recursive(lst, index + 1, current, first_max)
+        first_max, second_max = current, first_max
     elif current >= second_max:
-        return find_second_maximum_recursive(lst, index + 1, first_max, current)
-    else:
-        return find_second_maximum_recursive(lst, index + 1, first_max, second_max)
+        second_max = current
+
+    return find_second_maximum_recursive(lst, index + 1, first_max, second_max)
 
 
 class TestFindSecondMaximumRecursiveFunction(unittest.TestCase):

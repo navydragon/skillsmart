@@ -1,7 +1,11 @@
 import unittest
 
 
-def print_even_index_elements(lst, index):
+def print_even_index(lst):
+    if not lst:
+        return
+    print_even_index_helper(lst, 0)
+def print_even_index_helper(lst, index):
     # Базовый случай
     if index >= len(lst):
         return
@@ -9,7 +13,7 @@ def print_even_index_elements(lst, index):
     if index % 2 == 0:
         print(lst[index])
     # Рекурсия
-    print_even_index_elements(lst, index + 1)
+    print_even_index_helper(lst, index + 1)
 
 
 # Вспомогательная функция для тестирования, чтобы собирать результаты в список
@@ -17,8 +21,6 @@ def get_even_index_elements(lst):
     result = []
     _collect_even_index_elements(lst, 0, result)
     return result
-
-
 def _collect_even_index_elements(lst, index, result):
     if index >= len(lst):
         return
@@ -45,4 +47,5 @@ class TestPrintEvenIndexElementsFunction(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+   # unittest.main()
+   print_even_index([2,3])
