@@ -1,21 +1,27 @@
 import os
 
-def find_all_files(directory):
-    all_files = []
-    find_files_recursive(directory, all_files)
-    return all_files
 
-def find_files_recursive(current_directory, all_files):
-    for entry in os.listdir(current_directory):
-        full_path = os.path.join(current_directory, entry)
+def find_files(dir_path):
+    # Проверяем, является ли указанный путь допустимой директорией
+    if not os.path.isdir(dir_path):
+        return
+
+    # Получаем список всех файлов и директорий в указанной директории
+    files_and_dirs = os.listdir(dir_path)
+
+    # Итерация по списку файлов и директорий
+    for file_or_dir in files_and_dirs:
+        # Создаем полный путь к файлу или директории
+        full_path = os.path.join(dir_path, file_or_dir)
+
+        # Если полный путь является директорией, рекурсивно вызываем функцию для поиска файлов в этой директории
         if os.path.isdir(full_path):
-            find_files_recursive(full_path, all_files)
-        elif os.path.isfile(full_path):
-            all_files.append(full_path)
+            find_files(full_path)
+        else:
+            # Печатаем путь к файлу
+            print(full_path)
 
 
+# Пример использования
 directory = 'C:/Users/User/Downloads'
-files = find_all_files(directory)
-for file in files:
-    print(file)
-print(f"Всего файлов: {len(files)}")
+find_files(directory)

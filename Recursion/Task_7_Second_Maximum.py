@@ -4,7 +4,7 @@ import unittest
 def find_second_maximum(lst):
     if len(lst) < 2:
         raise ValueError("Должно быть хотя бы 2 элемента")
-    return find_second_maximum_recursive(lst, 0, float('-inf'), float('-inf'))
+    return find_second_maximum_recursive(lst, 0, lst[0], lst[1])
 
 def find_second_maximum_recursive(lst, index, first_max, second_max):
     if index == len(lst):

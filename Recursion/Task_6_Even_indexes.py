@@ -9,12 +9,10 @@ def print_even_index_helper(lst, index):
     # Базовый случай
     if index >= len(lst):
         return
-    # Если индекс четный, печатаем элемент
-    if index % 2 == 0:
-        print(lst[index])
-    # Рекурсия
-    print_even_index_helper(lst, index + 1)
-
+    # Печатаем элемент
+    print(lst[index])
+    # Пропускаем один элемент и вызываем функцию для следующего четного индекса
+    print_even_index_helper(lst, index + 2)
 
 # Вспомогательная функция для тестирования, чтобы собирать результаты в список
 def get_even_index_elements(lst):
