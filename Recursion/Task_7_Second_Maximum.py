@@ -4,12 +4,19 @@ import unittest
 def find_second_maximum(lst):
     if len(lst) < 2:
         raise ValueError("Должно быть хотя бы 2 элемента")
-    return find_second_maximum_recursive(lst, 0, lst[0], lst[1])
+    if len(lst) == 2 and lst[1] == lst[0]:
+        raise ValueError("Список должен содержать хотя бы два различных элемента")
+
+    # Инициализация первых двух максимальных значений
+    if lst[0] > lst[1]:
+        first_max, second_max = lst[0], lst[1]
+    else:
+        first_max, second_max = lst[1], lst[0]
+
+    return find_second_maximum_recursive(lst, 2, first_max, second_max)
 
 def find_second_maximum_recursive(lst, index, first_max, second_max):
     if index == len(lst):
-        if second_max == float('-inf'):
-            raise ValueError("Список должен содержать хотя бы два различных элемента")
         return second_max
 
     current = lst[index]

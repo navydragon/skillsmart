@@ -2,26 +2,31 @@ import os
 
 
 def find_files(dir_path):
-    # Проверяем, является ли указанный путь допустимой директорией
     if not os.path.isdir(dir_path):
-        return
+        return []
 
-    # Получаем список всех файлов и директорий в указанной директории
-    files_and_dirs = os.listdir(dir_path)
+    all_files = []
+    stack = [dir_path]
 
-    # Итерация по списку файлов и директорий
-    for file_or_dir in files_and_dirs:
-        # Создаем полный путь к файлу или директории
-        full_path = os.path.join(dir_path, file_or_dir)
+    while stack:
+        current_directory = stack.pop()
 
-        # Если полный путь является директорией, рекурсивно вызываем функцию для поиска файлов в этой директории
-        if os.path.isdir(full_path):
-            find_files(full_path)
-        else:
-            # Печатаем путь к файлу
-            print(full_path)
+        files_and_dirs = os.listdir(current_directory)
+
+        for file_or_dir in files_and_dirs:
+            full_path = os.path.join(current_directory, file_or_dir)
+
+            if os.path.isdir(full_path):
+                stack.append(full_path)
+            elif os.path.isfile(full_path):
+                all_files.append(full_path)
+
+    return all_files
 
 
 # Пример использования
 directory = 'C:/Users/User/Downloads'
-find_files(directory)
+files = find_files(directory)
+for file in files:
+    print(file)
+print(f"Всего файлов: {len(files)}")
