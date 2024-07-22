@@ -2,9 +2,6 @@ import sys
 import os
 import unittest
 
-# Добавляем корневую папку проекта в sys.path для корректного импорта
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from Task_02_BST import BSTNode, BSTFind, BST
 
 
