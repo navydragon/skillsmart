@@ -1,47 +1,124 @@
-class aBST:
-    def __init__(self, depth):
-        tree_size = 2 ** (depth + 1) - 1
-        self.Tree = [None] * tree_size # массив ключей
+import unittest
+from Binary_search_trees_2 import aBST
 
-    def FindKeyIndex(self, key):
-        index = 0
-        while index < len(self.Tree):
-            if self.Tree[index] is None:
-                return -index  # возвращаем отрицательный индекс для незаполненного слота
-            if self.Tree[index] == key:
-                return index  # ключ найден
-            if key < self.Tree[index]:
-                index = 2 * index + 1  # переход к левому потомку
-            else:
-                index = 2 * index + 2  # переход к правому потомку
-        return None  # дерево полностью пройдено и ключ не найден
 
-    def AddKey(self, key):
-        index = self.FindKeyIndex(key)
-        if index is None:
-            return -1  # дерево полностью заполнено и ключ не может быть добавлен
-        if index < 0:
-            self.Tree[-index] = key
-            return -index
-        return index  # ключ уже существует в дереве
+class TestUM(unittest.TestCase):
+    def setUp(self):
+        pass
 
-# Пример использования
-depth = 3
-tree = aBST(depth)
+    def test_tree_size(self):
+        abst = aBST(0)
+        self.assertEqual(len(abst.Tree), 1)
+        abst = aBST(1)
+        self.assertEqual(len(abst.Tree), 3)
+        abst = aBST(2)
+        self.assertEqual(len(abst.Tree), 7)
+        abst = aBST(3)
+        self.assertEqual(len(abst.Tree), 15)
 
-keys_to_add = [50, 25, 75, 12, 37, 62, 87, 6, 18, 31, 43, 56, 68, 81, 93]
-added_indices = []
+    def test_find(self):
+        abst = aBST(0)
+        self.assertEqual(abst.FindKeyIndex(50), 0)
+        abst = aBST(1)
+        self.assertEqual(abst.FindKeyIndex(50), 0)
+        abst = aBST(2)
+        self.assertEqual(abst.FindKeyIndex(50), 0)
+        abst = aBST(3)
+        self.assertEqual(abst.FindKeyIndex(50), 0)
+        abst = aBST(4)
+        self.assertEqual(abst.FindKeyIndex(50), 0)
 
-for key in keys_to_add:
-    index = tree.AddKey(key)
-    added_indices.append(index)
-    print(f"Added key {key} at index {index}")
+    def test_add_root_only_tree(self):
+        abst = aBST(0)
+        self.assertEqual(abst.FindKeyIndex(50), 0)
+        self.assertEqual(abst.AddKey(50), 0)
+        self.assertEqual(abst.FindKeyIndex(50), 0)
+        self.assertEqual(abst.Tree, [50])
+        self.assertEqual(abst.AddKey(50), 0)
 
-print("\nFinal tree:")
-print(tree.Tree)
+    def test_add_depth_1(self):
+        abst = aBST(1)
+        self.assertEqual(len(abst.Tree),3)
+        self.assertEqual(abst.AddKey(50), 0)
+        print(abst.Tree)
+        self.assertEqual(abst.FindKeyIndex(45), -1)
+        self.assertEqual(abst.FindKeyIndex(55), -2)
 
-# Поиск ключей
-search_keys = [50, 31, 43, 99]
-for key in search_keys:
-    index = tree.FindKeyIndex(key)
-    print(f"Key {key} found at index {index}")
+        self.assertEqual(abst.AddKey(45), 1)
+        self.assertEqual(abst.AddKey(55), 2)
+
+        self.assertEqual(abst.FindKeyIndex(50), 0)
+        self.assertEqual(abst.FindKeyIndex(45), 1)
+        self.assertEqual(abst.FindKeyIndex(55), 2)
+        self.assertEqual(abst.Tree, [50, 45, 55])
+
+        self.assertEqual(abst.AddKey(50), 0)
+        self.assertEqual(abst.AddKey(45), 1)
+        self.assertEqual(abst.AddKey(55), 2)
+
+    def test_add_depth_2(self):
+        #          50
+        #         /  \
+        #      35      55
+        #        \
+        #        45
+
+        abst = aBST(2)
+        self.assertEqual(abst.AddKey(50), 0)
+
+        self.assertEqual(abst.FindKeyIndex(35), -1)
+        self.assertEqual(abst.FindKeyIndex(55), -2)
+        self.assertEqual(abst.AddKey(35), 1)
+        self.assertEqual(abst.AddKey(55), 2)
+        self.assertEqual(abst.Tree, [50, 35, 55, None, None, None, None])
+
+        self.assertEqual(abst.FindKeyIndex(50), 0)
+        self.assertEqual(abst.FindKeyIndex(35), 1)
+        self.assertEqual(abst.FindKeyIndex(55), 2)
+
+        self.assertEqual(abst.FindKeyIndex(45), -4)
+        self.assertEqual(abst.AddKey(45), 4)
+        self.assertEqual(abst.FindKeyIndex(45), 4)
+        self.assertEqual(abst.Tree, [50, 35, 55, None, 45, None, None])
+
+        self.assertEqual(abst.FindKeyIndex(48), None)
+        self.assertEqual(abst.AddKey(48), -1)
+        self.assertEqual(abst.Tree, [50, 35, 55, None, 45, None, None])
+
+    def test_add_depth_3(self):
+        #          50
+        #         /  \
+        #      35      55
+        #     /  \       \
+        #   30    40      60
+        #        /  \     /
+        #       37  45   57
+
+        #  0,  1,  2,  3,  4,    5,  6,    7,    8,  9, 10,   11,  12,  13,   14
+        # 50, 35, 55, 30, 40, None, 60, None, None, 37, 45, None, None, 57, None
+
+        abst = aBST(3)
+        self.assertEqual(abst.AddKey(50), 0)
+
+        self.assertEqual(abst.AddKey(35), 1)
+        self.assertEqual(abst.AddKey(55), 2)
+
+        self.assertEqual(abst.AddKey(60), 6)
+        self.assertEqual(abst.AddKey(40), 4)
+        self.assertEqual(abst.AddKey(30), 3)
+
+        self.assertEqual(abst.AddKey(45), 10)
+        self.assertEqual(abst.AddKey(57), 13)
+        self.assertEqual(abst.AddKey(37), 9)
+
+        self.assertEqual(
+            abst.Tree,
+            [50, 35, 55, 30, 40, None, 60, None, None, 37, 45, None, None, 57, None],
+        )
+
+        self.assertEqual(abst.AddKey(39), -1)
+        self.assertEqual(abst.AddKey(48), -1)
+
+
+if __name__ == '__main__':
+    unittest.main()
