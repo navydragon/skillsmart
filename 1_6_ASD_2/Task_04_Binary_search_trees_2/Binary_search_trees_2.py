@@ -26,3 +26,4 @@ class aBST:
             return -index
         return index  # ключ уже существует в дереве
 
+
